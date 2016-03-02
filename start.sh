@@ -25,6 +25,8 @@ echo "Adding Magento Caching"
 
 sed -i -e  '/<\/config>/{ r /var/www/app/etc/mage-cache.xml' -e 'd}' /var/www/app/etc/local.xml.template
 
+mysql -u "$DB_ENV_USER" --password="$DB_ENV_PASS" -h db -P "$DB_PORT_3306_TCP_PORT" magento < /tmp/magento-sample-data-1.9.1.0/magento_sample_data_for_1.9.1.0.sql
+
 touch /firstrun
 
 fi
