@@ -7,20 +7,19 @@ This docker image expects 2 other linked containers to work .
 
 2. Memcached linked as 'cache'
 
-### Starting this container
+### Builing the Image yourself.
+Go to your [Magento Account](https://www.magentocommerce.com/products/customer/account/login) to get your MAGE_ID.
+
+At [Account Settings > Downloads Access Token](https://www.magentocommerce.com/products/downloads/token/) you can get / generate your Downloads Access Token.
+
+This is required to download the current Magento 1.9.2.4 and its sample-data-package.
 
 ```
+$ git clone https://github.com/rayphi/docker-magento.git .
+$ docker build -t docker-magento --build-arg MAGE_ID=MAG000000000 --build-arg TOKEN=0000000000000000000000000000000000000000 .
 $ docker run -td --name mariadb -e USER=user -e PASS=password  paintedfox/mariadb
-```
-
-```
 $ docker run --name memcached -d -p 11211 sylvainlasnier/memcached
-```
-
-Then finally run our docker-magento container
-
-```
-docker run -p 80:80 -link mariadb:db --link memcached:cache -td paimpozhil/magento-docker
+$ docker run -p 80:80 -link mariadb:db --link memcached:cache -td docker-magento 
 ```
 
 Now visit your public IP in your browser and you will see the installer ready to go.. enter the database password when installer prompts ('password') is the default. 
@@ -35,22 +34,15 @@ However during install you may have to enter the database password once which is
 Cache will be preconfigured.
 
 
-### SSH 
-
-Now as you think you may need to get into our Docker-magento container to be easily look into things, I did not package an SSH server just for this purpose.
+### Get into our container 
+```
+docker ps # to get container-id or container-name
+docker exec -i -t <container-id or container-name> bash
+```
 
 You can use NSENTER to get into our container
 #### https://github.com/jpetazzo/nsenter 
 
-
-### Builing the Image yourself.
-
-```
-
-git clone https://github.com/paimpozhil/docker-magento.git .
-docker build -t docker-magento .
-docker run -p 80:80 -link mariadb:db --link memcached:cache -td docker-magento 
-```
 
 ### Need support?
 
